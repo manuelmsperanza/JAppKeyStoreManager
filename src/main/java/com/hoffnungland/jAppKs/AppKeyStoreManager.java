@@ -2,6 +2,7 @@ package com.hoffnungland.jAppKs;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.KeyStore;
@@ -10,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Enumeration;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -23,44 +25,61 @@ public class AppKeyStoreManager {
 	
 	private static final Logger logger = LogManager.getLogger(AppKeyStoreManager.class);
 	
+	private String keyStorePath;
+	private String passwordKs;
 	private KeyStore ks;
 	
-	public void init(String keyStorePath, String passwordKs) {
+	
+	public AppKeyStoreManager(String keyStorePath, String passwordKs) {
+		super();
+		this.keyStorePath = keyStorePath;
+		this.passwordKs = passwordKs;
+	}
+
+	public void init() throws KeyStoreException, FileNotFoundException, IOException, NoSuchAlgorithmException, CertificateException {
+		logger.traceEntry();
 		this.ks = KeyStore.getInstance("pkcs12");
 		
-		try (FileInputStream fis = new FileInputStream(keyStorePath)) {
-			this.ks.load(fis, passwordKs.toCharArray());
+		try (FileInputStream fis = new FileInputStream(this.keyStorePath)) {
+			this.ks.load(fis, this.passwordKs.toCharArray());
 		}
+		logger.traceExit();
 	}
 	
-	public void writePasswordToKeyStore(KeyStore keyStore, String keyStorePath, String keyStorePassword, String passwordPassword, String alias, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException, CertificateException, IOException{
-
-        KeyStore.PasswordProtection keyStorePP = new KeyStore.PasswordProtection(passwordPassword.toCharArray());
+	public String writePasswordToKeyStore(String entryAlias, String entryValue) throws NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException, CertificateException, IOException{
+		logger.traceEntry();
+		String entryPassword = RandomStringUtils.randomAlphanumeric(12);
+        KeyStore.PasswordProtection keyStorePP = new KeyStore.PasswordProtection(entryPassword.toCharArray());
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBE");
-        SecretKey generatedSecret = factory.generateSecret(new PBEKeySpec(password.toCharArray(), RandomStringUtils.randomAlphanumeric(24).getBytes(), 13));
+        SecretKey generatedSecret = factory.generateSecret(new PBEKeySpec(entryValue.toCharArray(), RandomStringUtils.randomAlphanumeric(24).getBytes(), 13));
 
-        keyStore.setEntry(alias, new KeyStore.SecretKeyEntry(generatedSecret), keyStorePP);
+        this.ks.setEntry(entryAlias, new KeyStore.SecretKeyEntry(generatedSecret), keyStorePP);
 
-        FileOutputStream outputStream = new FileOutputStream(new File(keyStorePath));
-        keyStore.store(outputStream, keyStorePassword.toCharArray());
+        FileOutputStream outputStream = new FileOutputStream(new File(this.keyStorePath));
+        this.ks.store(outputStream, this.passwordKs.toCharArray());
+        logger.traceExit();
+        return entryPassword;
     }
 	
-	public String readPasswordFromKeyStore(KeyStore keyStore, String passwordPassword, String passwordAlias) throws NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException, InvalidKeySpecException{
-
-        KeyStore.PasswordProtection keyStorePP = new KeyStore.PasswordProtection(passwordPassword.toCharArray());
-
-        KeyStore.SecretKeyEntry ske = (KeyStore.SecretKeyEntry)keyStore.getEntry(passwordAlias, keyStorePP);
+	public String readPasswordFromKeyStore(String entryAlias, String entryPassword) throws NoSuchAlgorithmException, UnrecoverableEntryException, KeyStoreException, InvalidKeySpecException{
+		logger.traceEntry();
+        KeyStore.PasswordProtection keyStorePP = new KeyStore.PasswordProtection(entryPassword.toCharArray());
+        
+        KeyStore.SecretKeyEntry ske = (KeyStore.SecretKeyEntry)this.ks.getEntry(entryAlias, keyStorePP);
         if(ske == null) {
-        	System.err.println("Password for " + passwordAlias + " does not exist");
+        	System.err.println("Password for " + entryAlias + " does not exist");
         	return null;
         }
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBE");
         PBEKeySpec keySpec = (PBEKeySpec)factory.getKeySpec(ske.getSecretKey(), PBEKeySpec.class);
-
+        
+        logger.traceExit();
         return new String(keySpec.getPassword());
     }
 	
-	
+	public Enumeration<String> listAliases() throws KeyStoreException {
+		return this.ks.aliases();
+	}
 	
 }

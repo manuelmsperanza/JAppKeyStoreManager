@@ -1,8 +1,8 @@
-#JAppKeyStoreManager
-#Create a new project
+# JAppKeyStoreManager
+# Create a new project
 	mvn archetype:generate -Dfilter="org.apache.maven.archetypes:maven-archetype-quickstart" -DgroupId="com.hoffnungland" -DartifactId=JAppKeyStoreManager -Dpackage="com.hoffnungland.jAppKs" -Dversion="0.0.1-SNAPSHOT"
-#Build settings
-##Add prerequisites
+# Build settings
+## Add prerequisites
 	<prerequisites>
 		<maven>3.0.5</maven>
 	</prerequisites>
@@ -15,8 +15,8 @@ Update to java 1.8<br>
 		<java.target.version>1.8</java.target.version>
 	</properties>
 
-#Relationship
-##Add dependencies
+# Relationship
+## Add dependencies
 Add log4j<br>
 
 	<dependencies>
@@ -40,15 +40,15 @@ Add log4j<br>
 		</dependency>
 	</dependencies>
 
-#Run with Maven
+# Run with Maven
 	
 	start mvn exec:java -Dexec.mainClass="com.hoffnungland.jAppKs.App" -Dlog4j.configurationFile=src/main/resources/log4j2.xml
 	
 
-#KeyStore
+# KeyStore
 For more information, please refer to official documentation [keytool - Oracle Help Center](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/keytool.html)
 
-##Create KeyStore and Private Key (with user prompt)
+## Create KeyStore and Private Key (with user prompt)
 keytool -genkeypair -keysize 2048 -keyalg RSA -alias <name.surname> -keystore <target *.jks file path>
 
 	Enter keystore password: <your keystore password>
@@ -72,7 +72,7 @@ keytool -genkeypair -keysize 2048 -keyalg RSA -alias <name.surname> -keystore <t
 	        (RETURN if same as keystore password):
 	Re-enter new password:
 
-##Create KeyStore and Private Key (Silent mode)
+## Create KeyStore and Private Key (Silent mode)
 _Different store and key passwords not supported for PKCS12 KeyStores_
 
 	keytool -genkeypair -keysize 2048 -keyalg RSA -alias <name.surname> -keystore <target *.jks file path> -dname "CN=<name.surname>, OU=NA, O=NA, L=<city or locality>, ST=<state or province>, C=<country code>" -validity 365 -storepass <your keystore password>
