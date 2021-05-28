@@ -147,6 +147,8 @@
 							<keystore>${hoffnunglandJksPath}</keystore>
 							<alias>${hoffnunglandJksEntry}</alias>
 							<storepass>${hoffnunglandJksPasswd}</storepass>
+							<keypass>${hoffnunglandKeyPasswd}</keypass>
+							<tsa>${hoffnunglandTsaUrl}</tsa>
 						</configuration>
 					</execution>
 					<execution>
