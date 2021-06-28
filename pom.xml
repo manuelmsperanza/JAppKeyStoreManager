@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.hoffnungland</groupId>
-	<artifactId>JAppKeyStoreManager</artifactId>
+	<artifactId>jappkeystoremanager</artifactId>
 	<version>1.0.1</version>
 
 	<name>JAppKeyStoreManager</name>
@@ -17,7 +17,22 @@
 		<java.source.version>1.8</java.source.version>
 		<java.target.version>1.8</java.target.version>
 	</properties>
-
+	<distributionManagement>
+	   <repository>
+	     <id>github</id>
+	     <name>GitHub manuelmsperanza Apache Maven Packages</name>
+	     <url>https://maven.pkg.github.com/manuelmsperanza/JAppKeyStoreManager</url>
+	   </repository>
+	</distributionManagement>
+	<scm>
+		<connection>scm:git:https://github.com/manuelmsperanza/JAppKeyStoreManager.git</connection>
+		<developerConnection>scm:git:git@github.com:manuelmsperanza/JAppKeyStoreManager.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/manuelmsperanza/JAppKeyStoreManager/issues</url>
+	</issueManagement>
 	<build>
 		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
@@ -51,7 +66,7 @@
 						<archive>
 							<manifest>
 								<addClasspath>true</addClasspath>
-								<classpathPrefix>JTunneling_lib/</classpathPrefix>
+								<classpathPrefix>JAppKeyStoreManager_lib/</classpathPrefix>
 								<mainClass>com.hoffnungland.jAppKs.App</mainClass>
 							</manifest>
 						</archive>
@@ -183,7 +198,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.hoffnungland</groupId>
-			<artifactId>Log4j</artifactId>
+			<artifactId>log4j</artifactId>
 			<version>1.0.9</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
