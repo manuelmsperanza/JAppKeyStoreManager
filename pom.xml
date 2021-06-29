@@ -19,7 +19,7 @@
 	</properties>
 	<distributionManagement>
 	   <repository>
-	     <id>github</id>
+	     <id>manuelmsperanza.github</id>
 	     <name>GitHub manuelmsperanza Apache Maven Packages</name>
 	     <url>https://maven.pkg.github.com/manuelmsperanza/JAppKeyStoreManager</url>
 	   </repository>
