@@ -47,6 +47,7 @@ public class EntryTableMouseAdapter extends MouseAdapter {
 				} catch (NoSuchAlgorithmException | UnrecoverableEntryException | KeyStoreException | InvalidKeySpecException e) {
 					logger.error(e);
 					JOptionPane.showMessageDialog(this.frame, e.getMessage(), "Exception", JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
 				}
 				
 			}  		
