@@ -15,6 +15,9 @@
 		<java.source.version>1.8</java.source.version>
 		<java.target.version>1.8</java.target.version>
 	</properties>
+	<prerequisites>
+		<maven>3.1.0</maven>
+	</prerequisites>
 	<distributionManagement>
 	   <repository>
 	     <id>manuelmsperanza.github</id>
@@ -107,7 +110,7 @@
 						<configuration>
 							<rules>
 								<requireMavenVersion>
-									<version>3.0.5</version>
+									<version>3.1.0</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
 									<version>1.8.0</version>
@@ -120,7 +123,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
+				<version>3.0.0</version>
 				<!-- <configuration> <async>true</async> <mainClass>com.hoffnungland.jAppKs.App</mainClass> 
 					</configuration> -->
 			</plugin>
@@ -188,7 +191,7 @@
 		<dependency>
 			<groupId>com.hoffnungland</groupId>
 			<artifactId>log4j</artifactId>
-			<version>1.0.9</version>
+			<version>1.0.10</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
