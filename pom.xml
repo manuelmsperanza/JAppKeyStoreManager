@@ -5,7 +5,7 @@
 
 	<groupId>com.hoffnungland</groupId>
 	<artifactId>jappkeystoremanager</artifactId>
-	<version>1.0.6</version>
+	<version>1.0.7-SNAPSHOT</version>
 
 	<name>JAppKeyStoreManager</name>
 	<url>http://hoffnungland.com</url>
@@ -28,7 +28,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/manuelmsperanza/JAppKeyStoreManager.git</connection>
 		<developerConnection>scm:git:git@github.com:manuelmsperanza/JAppKeyStoreManager.git</developerConnection>
-		<tag>jappkeystoremanager-1.0.6</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<issueManagement>
 		<system>GitHub</system>
