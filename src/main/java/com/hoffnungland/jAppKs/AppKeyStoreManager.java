@@ -48,11 +48,11 @@ public class AppKeyStoreManager {
 	
 	public String writePasswordToKeyStore(String entryAlias, String entryValue) throws NoSuchAlgorithmException, InvalidKeySpecException, KeyStoreException, CertificateException, IOException{
 		logger.traceEntry();
-		String entryPassword = RandomStringUtils.randomAlphanumeric(12);
+		String entryPassword = RandomStringUtils.secureStrong().nextAlphabetic(12);
         KeyStore.PasswordProtection keyStorePP = new KeyStore.PasswordProtection(entryPassword.toCharArray());
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBE");
-        SecretKey generatedSecret = factory.generateSecret(new PBEKeySpec(entryValue.toCharArray(), RandomStringUtils.randomAlphanumeric(24).getBytes(), 13));
+        SecretKey generatedSecret = factory.generateSecret(new PBEKeySpec(entryValue.toCharArray(), RandomStringUtils.secureStrong().nextAlphabetic(24).getBytes(), 13));
 
         this.ks.setEntry(entryAlias, new KeyStore.SecretKeyEntry(generatedSecret), keyStorePP);
 

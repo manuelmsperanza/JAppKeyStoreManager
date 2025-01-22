@@ -36,7 +36,7 @@ public class App implements ActionListener {
 
 	private static final String LOAD_JKS_ACTION = "Load JKS Action";
 	private JTable entryTable;
-	private JTable table;
+	//private JTable table;
 	private DefaultTableModel entryTableModel;
 	
 	/**
