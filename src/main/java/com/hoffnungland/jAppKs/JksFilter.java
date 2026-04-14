@@ -7,10 +7,19 @@ import javax.swing.filechooser.FileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Filters file chooser entries to Java KeyStore files.
+ */
 public class JksFilter extends FileFilter {
 	
 	private static final Logger logger = LogManager.getLogger(JksFilter.class);
 
+	/**
+	 * Accepts directories and files with a {@code .jks} extension.
+	 *
+	 * @param f candidate file from the chooser
+	 * @return {@code true} when the candidate is a directory or a JKS file
+	 */
 	@Override
 	public boolean accept(File f) {
 		logger.traceEntry();
@@ -31,6 +40,11 @@ public class JksFilter extends FileFilter {
 		return logger.traceExit(false);
 	}
 
+	/**
+	 * Returns the user-visible description for this filter.
+	 *
+	 * @return filter description
+	 */
 	@Override
 	public String getDescription() {
 		return "JKS *.jks";
