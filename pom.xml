@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.hoffnungland</groupId>
@@ -15,29 +17,33 @@
 		<java.version>25</java.version>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
 	</properties>
+
 	<distributionManagement>
-	   <repository>
-	     <id>manuelmsperanza.github</id>
-	     <name>GitHub manuelmsperanza Apache Maven Packages</name>
-	     <url>https://maven.pkg.github.com/manuelmsperanza/JAppKeyStoreManager</url>
-	   </repository>
+		<repository>
+			<id>manuelmsperanza.github</id>
+			<name>GitHub manuelmsperanza Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/manuelmsperanza/JAppKeyStoreManager</url>
+		</repository>
 	</distributionManagement>
+
 	<scm>
 		<connection>scm:git:https://github.com/manuelmsperanza/JAppKeyStoreManager.git</connection>
 		<developerConnection>scm:git:git@github.com:manuelmsperanza/JAppKeyStoreManager.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/manuelmsperanza/JAppKeyStoreManager/issues</url>
 	</issueManagement>
+
 	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-compiler-plugin</artifactId>
-		        <version>3.14.1</version>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.14.1</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
 						<release>${maven.compiler.release}</release>
@@ -50,6 +56,16 @@
 					<configuration>
 						<releaseProfiles>github</releaseProfiles>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.5.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jarsigner-plugin</artifactId>
+					<version>3.1.0</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
@@ -67,6 +83,28 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-build-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>[3.9.0,)</version>
+								</requireMavenVersion>
+								<requireJavaVersion>
+									<version>[25,)</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -106,6 +144,47 @@
 			</resource>
 		</resources>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>sign-artifacts</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jarsigner-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<keystore>${hoffnunglandJksPath}</keystore>
+									<alias>${hoffnunglandJksEntry}</alias>
+									<storepass>${hoffnunglandJksPasswd}</storepass>
+									<keypass>${hoffnunglandKeyPasswd}</keypass>
+									<tsa>${hoffnunglandTsaUrl}</tsa>
+								</configuration>
+							</execution>
+							<execution>
+								<id>verify-signature</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>verify</goal>
+								</goals>
+								<configuration>
+									<certs>true</certs>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.hoffnungland</groupId>
