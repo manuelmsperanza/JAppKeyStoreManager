@@ -14,6 +14,9 @@ import javax.swing.JTable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Mouse listener used by the entry table to lazily reveal stored values.
+ */
 public class EntryTableMouseAdapter extends MouseAdapter {
 	
 	private static final Logger logger = LogManager.getLogger(EntryTableMouseAdapter.class);
@@ -22,12 +25,25 @@ public class EntryTableMouseAdapter extends MouseAdapter {
 	private JFrame frame;
 	private JTable entryTable;
 
+	/**
+	 * Creates a table mouse adapter instance.
+	 *
+	 * @param app main application facade
+	 * @param frame owner frame for dialogs
+	 * @param entryTable table holding aliases and values
+	 */
 	public EntryTableMouseAdapter(App app, JFrame frame, JTable entryTable) {
 		this.app = app;
 		this.frame = frame;
 		this.entryTable = entryTable;
 	}
 
+	/**
+	 * Handles clicks by asking for an entry password and resolving the value.
+	 *
+	 * @param event click event
+	 */
+	@Override
 	public void mouseClicked(MouseEvent event) {
     	
     	int selectedRowIdx = this.entryTable.getSelectedRow();
